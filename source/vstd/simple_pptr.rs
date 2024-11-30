@@ -334,7 +334,7 @@ impl<V> Copy for PPtr<V> {
 
 impl<V> PPtr<V> {
     /// Allocates heap memory for type `V`, leaving it uninitialized.
-    #[cfg(feature = "std")]
+    #[cfg(feature = "alloc")]
     pub fn empty() -> (pt: (PPtr<V>, Tracked<PointsTo<V>>))
         ensures
             pt.1@.pptr() == pt.0,
@@ -373,7 +373,7 @@ impl<V> PPtr<V> {
 
     /// Allocates heap memory for type `V`, leaving it initialized
     /// with the given value `v`.
-    #[cfg(feature = "std")]
+    #[cfg(feature = "alloc")]
     pub fn new(v: V) -> (pt: (PPtr<V>, Tracked<PointsTo<V>>))
         ensures
             pt.1@.pptr() == pt.0,
@@ -390,6 +390,7 @@ impl<V> PPtr<V> {
     ///
     /// This consumes `perm`, since it will no longer be safe to access
     /// that memory location.
+    #[cfg(feature = "alloc")]
     #[verifier::external_body]
     pub fn free(self, Tracked(perm): Tracked<PointsTo<V>>)
         requires
@@ -416,6 +417,7 @@ impl<V> PPtr<V> {
     /// Requires the memory to be initialized.
     /// This consumes the [`PointsTo`] token, since the user is giving up
     /// access to the memory by freeing it.
+    #[cfg(feature = "alloc")]
     #[inline(always)]
     pub fn into_inner(self, Tracked(perm): Tracked<PointsTo<V>>) -> (v: V)
         requires
