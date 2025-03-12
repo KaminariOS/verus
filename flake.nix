@@ -7,14 +7,14 @@
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
+      # inputs.flake-utils.follows = "flake-utils";
     };
     crane = {
       url = "github:ipetkov/crane";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.rust-overlay.follows = "rust-overlay";
-      inputs.flake-utils.follows = "flake-utils";
-      inputs.flake-compat.follows = "flake-compat";
+      # inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.rust-overlay.follows = "rust-overlay";
+      # inputs.flake-utils.follows = "flake-utils";
+      # inputs.flake-compat.follows = "flake-compat";
     };
     flake-compat = {
       url = "github:edolstra/flake-compat";
@@ -22,7 +22,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, flake-utils, rust-overlay, crane, ... }: let
+  outputs = { nixpkgs, flake-utils, rust-overlay, crane, ... }: let
     # System types to support.
     supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
   in flake-utils.lib.eachSystem supportedSystems (system: let
@@ -51,6 +51,7 @@
       nativeBuildInputs = with pkgs; [
         pinnedRust
         pinnedZ3
+        cranePkgs.verus
       ];
 
       buildInputs = with pkgs; [

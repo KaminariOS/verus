@@ -116,7 +116,8 @@ let
 
       runHook postInstall
     '';
-
+    
+    doNotPostBuildInstallCargoBinaries = true;
     doNotRemoveReferencesToVendorDir = true;
     dontStrip = true;
     dontPatchELF = true;
