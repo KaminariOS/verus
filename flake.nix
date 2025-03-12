@@ -51,7 +51,7 @@
       nativeBuildInputs = with pkgs; [
         pinnedRust
         pinnedZ3
-        cranePkgs.verus
+        cranePkgs.verus-alloc
       ];
 
       buildInputs = with pkgs; [
