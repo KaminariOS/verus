@@ -18,6 +18,7 @@ they can be seamlessly cast to and fro.
 
 use super::layout::*;
 use super::prelude::*;
+use crate::pervasive::runtime_assert;
 
 verus! {
 
@@ -688,7 +689,7 @@ impl Dealloc {
 
 /// Allocate with the global allocator.
 /// Precondition should be consistent with the [documented safety conditions on `alloc`](https://doc.rust-lang.org/alloc/alloc/trait.GlobalAlloc.html#tymethod.alloc).
-#[cfg(feature = "std")]
+#[cfg(feature = "alloc")]
 #[verifier::external_body]
 pub fn allocate(size: usize, align: usize) -> (pt: (
     *mut u8,
@@ -715,9 +716,11 @@ pub fn allocate(size: usize, align: usize) -> (pt: (
     let layout = unsafe { alloc::alloc::Layout::from_size_align_unchecked(size, align) };
     // SAFETY: size != 0
     let p = unsafe { ::alloc::alloc::alloc(layout) };
-    if p == core::ptr::null_mut() {
-        std::process::abort();
-    }
+    // if p == core::ptr::null_mut() {
+        // std::process::abort();
+    // }
+    
+    runtime_assert(p != core::ptr::null_mut());
     (p, Tracked::assume_new(), Tracked::assume_new())
 }
 
