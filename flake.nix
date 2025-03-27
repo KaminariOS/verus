@@ -45,13 +45,14 @@
     };
   in {
     packages = {
-      inherit (cranePkgs) vargo verus verus-no-std verus-alloc line-count;
+      inherit (cranePkgs) vargo verus verus-no-std verus-alloc line-count cargo-verus;
     };
     devShell = pkgs.mkShell {
       nativeBuildInputs = with pkgs; [
         pinnedRust
         pinnedZ3
         cranePkgs.verus-alloc
+        cranePkgs.cargo-verus
       ];
 
       buildInputs = with pkgs; [

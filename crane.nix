@@ -29,6 +29,23 @@ let
       sourceRoot="."
     '';
   };
+  cargo-verus = craneLib.buildPackage (commonArgs // {  
+    pname = "cargo-verus";
+
+    cargoLock = ./source/Cargo.lock;
+    cargoToml = ./source/Cargo.toml;
+
+    postUnpack = ''
+      cd $sourceRoot/source
+      sourceRoot="."
+    '';
+
+    preBuild = ''
+      cd cargo-verus
+    '';
+
+    cargoArtifacts = null;
+  });
 
   vargo = craneLib.buildPackage (vargoArgs // {
     cargoArtifacts = craneLib.buildDepsOnly vargoArgs;
@@ -132,5 +149,5 @@ let
   verus-alloc = buildVerus "--release --vstd-no-std";
 in
 {
-  inherit src vargo verus verus-no-std verus-alloc line-count;
+  inherit src vargo cargo-verus verus verus-no-std verus-alloc line-count ;
 }
