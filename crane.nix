@@ -124,10 +124,11 @@ let
       popd
 
       pushd target/release
-      cp rust_verify $out/bin
+      cp rust_verify $out/bin/verus
+      cp ${cargo-verus}/bin/cargo-verus $out/bin
       popd
 
-      wrapProgram $out/bin/rust_verify \
+      wrapProgram $out/bin/verus \
         --set VERUS_ROOT $out/lib/verus \
         --set VERUS_Z3_PATH "$VERUS_Z3_PATH"
 
